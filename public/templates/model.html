@@ -5,6 +5,7 @@
             <md-select ng-if="path.options.enum"
                        ng-model="mc.model[pathName]"
                        ng-required="path.options.required && path.options.select !== false"
+                       placeholder="{{pathName.titleize()}}"
                        aria-label="{{pathName.titleize()}}">
                 <md-select-label>
                     {{ pathName.titleize() }} {{ (mc.model[pathName] ? ': ' + mc.model[pathName] : '')}}
