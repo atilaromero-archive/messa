@@ -385,19 +385,18 @@
       restrict: 'A',
       require: 'ngModel',
       link: function (scope, elm, attrs, ctrl) {
-        ctrl.$validators.json = function (modelValue, viewValue) {
-          if (ctrl.$isEmpty(modelValue)) {
-            // consider empty models to be valid
-            return true;
-          }
-
+        ctrl.$parsers.unshift(function (value) {
+          return (value === '') ? '{}' : value;
+        })
+        ctrl.$parsers.push(function (value) {
           try {
-            angular.fromJson(viewValue);
-            return true;
+            ctrl.$setValidity('json',true);
+            return JSON.parse(value)
           } catch (err) {
-            return false;
+            ctrl.$setValidity('json',false);
           }
-        };
+        });
+        ctrl.$formatters.push(JSON.stringify);
       }
     };
   }
